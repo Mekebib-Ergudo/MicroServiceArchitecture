@@ -90,6 +90,7 @@ public class CouponApiController : ControllerBase
     }
 
     [HttpDelete]
+    [Route("{id:int}")]
     public ResponseDto DeleteCoupon(int id)
     {
         try
