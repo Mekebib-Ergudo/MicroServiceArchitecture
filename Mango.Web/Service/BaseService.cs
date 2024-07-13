@@ -39,7 +39,7 @@ public class BaseService : IBaseService
                     message.Method = HttpMethod.Delete;
                     break;
                 default:
-                    message.Method = HttpMethod.Post;
+                    message.Method = HttpMethod.Get;
                     break;
             }
 
