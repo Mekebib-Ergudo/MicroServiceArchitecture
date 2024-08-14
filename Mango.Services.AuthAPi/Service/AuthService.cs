@@ -19,9 +19,27 @@ public class AuthService : IAuthService
         _userManager = userManager;
         _roleManager = roleManager;
     }
-    public Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
+    public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
     {
-        throw new NotImplementedException();
+        var user = _appDbContext.ApplicationUsers.FirstOrDefault(u => u.UserName.ToLower() == loginRequestDto.UserName.ToLower());
+        bool isValidUser = await _userManager.CheckPasswordAsync(user,loginRequestDto.Password);
+        if(user == null || isValidUser == false)
+        {
+            return new LoginResponseDto() { Token = "", User = null };
+        }
+        // if User Find we populate the UserDto with recorded user record. 
+        UserDto userDto = new()
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Name = user.Name,
+            PhoneNumber = user.PhoneNumber
+        };
+        return new LoginResponseDto()
+        {
+            Token = "",
+            User = userDto,
+        };
     }
 
     public async Task<string> Register(RegistrationRequestDto registrationRequestDto)
